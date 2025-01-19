@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Дни до дня рождения</title>
+    <style>
+      body {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Дни до дня рождения</h1>
+    <input type="date" name="" id="inputBirthday" />
+    <button id="calculateDaysBtn">Рассчитать</button>
+    <div id="messageResult"></div>
+    <script>
+      const inputBirthday = document.getElementById("inputBirthday");
+      const calculateDaysBtn = document.getElementById("calculateDaysBtn");
+      const messageResult = document.getElementById("messageResult");
+
+      function getDayWord(days) {
+        const lastTwoDigits = days % 100;
+        const lastDigit = days % 10;
+
+        if (lastTwoDigits >= 11 && lastTwoDigits <= 14) {
+          return "дней";
+        } else if (lastDigit === 1) {
+          return "день";
+        } else if (lastDigit >= 2 && lastDigit <= 4) {
+          return "дня";
+        } else {
+          return "дней";
+        }
+      }
+
+      function calculateDaysToBirthday() {
+        const currentDate = new Date();
+        const birthdayValue = inputBirthday.value;
+
+        if (!birthdayValue) {
+          messageResult.textContent = "Пожалуйста, введите дату!";
+          messageResult.style.color = "red";
+          return;
+        }
+
+        const birthday = new Date(birthdayValue);
+
+        birthday.setFullYear(currentDate.getFullYear());
+        if (birthday < currentDate) {
+          birthday.setFullYear(currentDate.getFullYear() + 1);
+        }
+
+        const diffInMs = birthday - currentDate;
+        const msInDay = 24 * 60 * 60 * 1000;
+        const daysToBirthday = Math.ceil(diffInMs / msInDay);
+
+        const dayWord = getDayWord(daysToBirthday);
+
+        messageResult.textContent = `До дня рождения осталось ${daysToBirthday} ${dayWord}`;
+      }
+
+      calculateDaysBtn.addEventListener("click", calculateDaysToBirthday);
+    </script>
+  </body>
+</html>
